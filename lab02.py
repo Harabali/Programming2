@@ -46,7 +46,6 @@ class MyString:
         print(self.string.upper())
 
 
-
 class SpecialElementsOfList:
 
     def __init__(self,ls):
@@ -88,5 +87,4 @@ print(str.upper())
 
 specLS = SpecialElementsOfList([-25, -10, -7, -3, 2, 4, 8, 10])
 print(specLS.list)
-print(specLS.__length)
 print(specLS.getSumZeroSubLists())
