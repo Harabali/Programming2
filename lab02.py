@@ -1,49 +1,58 @@
 
-class IntNumber:
-    def __init__(self,n):
-        self.number = n
+class IntegerNum:
+    'osztály szintű adattag'
 
-    def getSquare(self):
+    def __init__(self,p1):
+        self.number = p1
+
+    def doubleNum(self):
+        return self.number*2
+
+    def squareNum(self):
         return self.number**2
 
-    def getSquareRoot(self):
-        return self.number**(1/2)
+    def pow(self,k):
+        return self.number**k
 
-    def getAbs(self):
-        if self.number>0:
+    def abs(self):
+        if self.number > 0:
             return self.number
-        elif self.number<0:
+        elif self.number < 0:
             return -self.number
         else:
             return 0
 
 
 class Circle:
-    'to here we should define the class variables like:'
+    'osztályszintű adattag:'
     pi = 3.14
+    valami = 0
 
     def __init__(self,r):
-        self.radius = IntNumber(r)
-        self.diameter = 2*self.radius.number
+        self.radius = IntegerNum(r)
+        self.name = 'Kör'
+        self.diameter = IntegerNum(2*r)
 
     def __str__(self):
-        return 'This circle has radius = {} and its area is: {}'.format(self.radius.number,self.getArea())
+        return "This circle has radius: {} and its area: {}".format(self.radius.number,self.area())
 
-    def getArea(self):
-        return self.radius.getSquare()*Circle.pi
+    def area(self):
+        return self.radius.squareNum()*self.pi
 
-    def getPerimeter(self):
-        return 2*self.radius.number*Circle.pi
+    def perimeter(self):
+        return self.radius.doubleNum()*self.pi
+
 
 class MyString:
+
     def __init__(self):
-        self.string = ''
+        self.str = ""
 
     def getString(self):
-        self.string = input('Give me a string: ')
+        self.str = input('Give me a string:')
 
     def printString(self):
-        print(self.string.upper())
+        print(self.str.upper())
 
 
 class SpecialElementsOfList:
