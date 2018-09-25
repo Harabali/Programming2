@@ -1,6 +1,6 @@
 
 class IntegerNum:
-    'osztály szintű adattag'
+    'class attribute goes here'
 
     def __init__(self,p1):
         self.number = p1
@@ -24,7 +24,8 @@ class IntegerNum:
 
 
 class Circle:
-    'osztályszintű adattag:'
+    'class attribute goes here'
+
     pi = 3.14
     valami = 0
 
