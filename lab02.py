@@ -1,3 +1,4 @@
+import lab03
 
 class IntegerNum:
     'class attribute goes here'
@@ -35,12 +36,12 @@ class Circle:
         self.diameter = IntegerNum(2*r)
 
     def __str__(self):
-        return "This circle has radius: {} and its area: {}".format(self.radius.number,self.area())
+        return "This circle has radius: {} and its area: {}".format(self.radius.number,self.getArea())
 
-    def area(self):
+    def getArea(self):
         return self.radius.squareNum()*self.pi
 
-    def perimeter(self):
+    def getPerimeter(self):
         return self.radius.doubleNum()*self.pi
 
 
@@ -85,7 +86,7 @@ c2 = Circle(7)
 print(c1.__str__())
 print(c2.__str__())
 
-c1.radius=IntNumber(27)
+c1.radius=IntegerNum(27)
 
 print(c1.getArea())
 print(c2.getPerimeter())
@@ -98,3 +99,6 @@ print(str.upper())
 specLS = SpecialElementsOfList([-25, -10, -7, -3, 2, 4, 8, 10])
 print(specLS.list)
 print(specLS.getSumZeroSubLists())
+
+t1 = lab03.Triangle(3,4,5)
+print(t1)
