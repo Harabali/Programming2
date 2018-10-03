@@ -63,10 +63,10 @@ class BankAccount:
     def __init__(self):
         self.balance = 0
 
-    def withdraw(self,amount):
+    def deposit(self,amount):
         self.balance += amount
 
-    def deposit(self,amount):
+    def withdraw(self,amount):
         self.balance -= amount
 
     def __str__(self):
@@ -79,7 +79,7 @@ class PreDeterminedMinAccount(BankAccount):
         BankAccount.__init__(self)
         self.minLimit = -p1
 
-    def deposit(self,amount):
+    def withdraw(self,amount):
         if self.balance - amount >= self.minLimit:
             super().deposit(amount)
         else:
@@ -88,7 +88,7 @@ class PreDeterminedMinAccount(BankAccount):
 
 c = PreDeterminedMinAccount(100)
 for i in range(1,15):
-    if int(np.random.randint(0,2))==1:
+    if int(np.random.randint(0,2))==0:
         c.withdraw(int(np.random.randint(1,100)))
     else:
         c.deposit(int(np.random.randint(1,100)))
