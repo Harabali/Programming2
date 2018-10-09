@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>lab05.CalendarClock</OriginalElement>
+  <nodes>
+    <node x="98.5" y="301.0">lab05.CalendarClock</node>
+    <node x="0.0" y="0.0">lab05.Calendar</node>
+    <node x="292.0" y="22.0">lab05.Clock</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="lab05.CalendarClock" target="lab05.Calendar">
+      <point x="-94.0" y="-37.0" />
+      <point x="192.5" y="276.0" />
+      <point x="136.0" y="276.0" />
+      <point x="0.0" y="125.5" />
+    </edge>
+    <edge source="lab05.CalendarClock" target="lab05.Clock">
+      <point x="94.0" y="-37.0" />
+      <point x="380.5" y="276.0" />
+      <point x="437.0" y="276.0" />
+      <point x="0.0" y="103.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="111.5" y="298.5" />
+  <SelectedNodes>
+    <node>lab05.CalendarClock</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Inner Classes</Category>
+    <Category>Fields</Category>
+  </Categories>
+</Diagram>
+
