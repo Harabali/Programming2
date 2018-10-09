@@ -38,7 +38,10 @@ class Clock:
             self.__seconds = 0
             if (self.__minutes == 59):
                 self.__minutes = 0
-                self.__hours = 0 if self.__hours==23  else self.__hours + 1
+                if self.__hours==23:
+                    self.__hours = 0
+                else:
+                    self.__hours += 1
             else:
                 self.__minutes += 1;
         else:
@@ -49,6 +52,13 @@ class Clock:
 
     def __str__(self):
         return "%2d:%2d:%2d" % (self.__hours, self.__minutes, self.__seconds)
+
+
+x = Clock()
+print(x)
+for i in range(100000):
+    x.tick()
+    print(x)
 
 
 class Calendar:
@@ -80,6 +90,7 @@ class Calendar:
 
     def get(self):
         return (self, self.__day, self.__month, self.__year)
+
     def advance(self):
         months = Calendar.months
         max_days = months[self.__month-1]
@@ -100,6 +111,12 @@ class Calendar:
         return str(self.__day)+"/"+ str(self.__month)+ "/"+ str(self.__year)
 
 
+x = Calendar(1,1,2000)
+for i in range(60):
+    x.advance()
+    print(x)
+
+
 class CalendarClock(Clock, Calendar):
 
     def __init__(self, day,month,year,hours=0, minutes=0,seconds=0):
@@ -110,11 +127,11 @@ class CalendarClock(Clock, Calendar):
         return Calendar.__str__(self) + ", " + Clock.__str__(self)
 
 
-if __name__  == "__main__":
-    x = CalendarClock(24,12,57)
-    print(x)
-    for i in range(1000):
-        x.tick()
-    for i in range(1000):
-        x.advance()
-    print(x)
+
+x = CalendarClock(24,12,57)
+print(x)
+for i in range(10000):
+    x.tick()
+for i in range(1000):
+    x.advance()
+print(x)
