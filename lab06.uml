@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>Python</ID>
+  <OriginalElement>#C:/Users/otthoni/PycharmProjects/Programming2/lab06.py</OriginalElement>
+  <nodes>
+    <node x="582.0" y="1.0">lab06.SchoolClass</node>
+    <node x="268.0" y="0.0">lab06.Student</node>
+    <node x="30.5" y="0.0">lab06.Month</node>
+    <node x="0.0" y="257.0">lab06.NameDaysOfMonth</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="lab06.NameDaysOfMonth" target="lab06.Month">
+      <point x="0.0" y="-70.5" />
+      <point x="0.0" y="103.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="202.0" y="425.5" />
+  <SelectedNodes>
+    <node>lab06.SchoolClass</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Methods</Category>
+    <Category>Fields</Category>
+  </Categories>
+</Diagram>
+
