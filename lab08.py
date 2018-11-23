@@ -8,70 +8,7 @@
 
 import re
 from PyQt5 import QtCore, QtGui, QtWidgets
-
-class PhoneNumberFormatException (Exception):
-    pass
-
-class EmailFormatException (Exception):
-    pass
-
-class MissingDataException(Exception):
-    def __init__(self,value):
-        self.__value = value
-
-    def __str__(self):
-        return "The " + self.__value + " text box is empty. You should provide this mandatory data!"
-
-class Worker:
-
-    def __init__(self,name,id,address,phone,email):
-        self.__name = name
-        self.__id = id
-        self.__address = address
-        self.__phone = phone
-        self.__email = email
-
-    def getName(self):
-        return self.__name
-
-    def setName(self,p):
-        self.__name = p
-
-    def getID(self):
-        return self.__id
-
-    def getAddress(self):
-        return self.__address
-
-    def setAddress(self,p):
-        self.__address = p
-
-    def getPhone(self):
-        return self.__phone
-
-    def setPhone(self,p):
-        self.__phone = p
-
-    def getEmail(self):
-        return self.__email
-
-    def setEmail(self,p):
-        self.__email = p
-
-    def __str__(self):
-        return self.__name + '(ID: ' + self.__id + ')'
-
-    def __le__(self, other):
-        if self.getName() == other.getName():
-            return self.getID() < other.getID()
-        else:
-            return self.getName() < other.getName()
-
-    def __gt__(self, other):
-        return self.getName() > other.getName()
-
-    def __eq__(self, other):
-        return self.getID() == other.getID()
+import myClasses as mc
 
 class Ui_MainWindow(object):
 
@@ -158,16 +95,16 @@ class Ui_MainWindow(object):
         self.inPhone = QtWidgets.QLineEdit(self.centralwidget)
         self.inPhone.setGeometry(QtCore.QRect(140, 120, 391, 31))
         palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(141, 141, 141))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(141, 141, 141))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
-        brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
-        self.inPhone.setPalette(palette)
+        # brush = QtGui.QBrush(QtGui.QColor(141, 141, 141))
+        # brush.setStyle(QtCore.Qt.SolidPattern)
+        # palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.WindowText, brush)
+        # brush = QtGui.QBrush(QtGui.QColor(141, 141, 141))
+        # brush.setStyle(QtCore.Qt.SolidPattern)
+        # palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.WindowText, brush)
+        # brush = QtGui.QBrush(QtGui.QColor(120, 120, 120))
+        # brush.setStyle(QtCore.Qt.SolidPattern)
+        # palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.WindowText, brush)
+        # self.inPhone.setPalette(palette)
         font = QtGui.QFont()
         font.setPointSize(12)
         self.inPhone.setFont(font)
@@ -226,7 +163,10 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.btnAdd.clicked.connect(self.btnAddClicked)
-        self.list.itemClicked.connect(self.itemClicked)
+        self.btnAdd_2.clicked.connect(self.editClicked)
+        self.btnAdd_3.clicked.connect(self.btnAddClicked)
+        self.btnAdd_4.clicked.connect(self.deleteItem)
+        # self.list.itemClicked.connect(self.itemClicked)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -242,6 +182,7 @@ class Ui_MainWindow(object):
         self.btnAdd_3.setText(_translate("MainWindow", "Modify"))
         self.btnAdd_4.setText(_translate("MainWindow", "Delete"))
         self.label_6.setText(_translate("MainWindow", "List of persons:"))
+        self.reloadDatas()
 
     def btnAddClicked(self):
         try:
@@ -252,38 +193,38 @@ class Ui_MainWindow(object):
             email = self.inMail.text()
 
             if len(name) == 0:
-                raise MissingDataException('name')
+                raise mc.MissingDataException('name')
             if len(id) == 0:
-                raise MissingDataException('ID number')
+                raise mc.MissingDataException('ID number')
             if len(address)==0:
-                raise MissingDataException('address')
+                raise mc.MissingDataException('address')
             if len(phone)==0:
-                raise MissingDataException('phone number')
+                raise mc.MissingDataException('phone number')
             if len(email)==0:
-                raise MissingDataException('email address')
+                raise mc.MissingDataException('email address')
 
-            if len(phone) < 11 or len(phone) > 12 or phone.find('+36') == -1:
-                raise PhoneNumberFormatException
+            if len(phone) < 11 or len(phone) > 12 or not re.match('[+]36([0-9])',phone):
+                raise mc.PhoneNumberFormatException
 
-            if not re.match('(\w+@\w+(?:\.\w+))',email):
-                raise EmailFormatException
+            if not re.match('([0-9a-zA-Z_.-]+@\w+(?:\.\w+))',email):
+                raise mc.EmailFormatException
 
 
-        except MissingDataException as mse:
+        except mc.MissingDataException as mse:
             msg = QtWidgets.QMessageBox()
             msg.setWindowTitle('Warning!')
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.setText(mse.__str__())
             msg.exec()
 
-        except PhoneNumberFormatException:
+        except mc.PhoneNumberFormatException:
             msg = QtWidgets.QMessageBox()
             msg.setWindowTitle('Warning!')
             msg.setIcon(QtWidgets.QMessageBox.Warning)
             msg.setText("The phone number is not in right format!")
             msg.exec()
 
-        except EmailFormatException:
+        except mc.EmailFormatException:
             msg = QtWidgets.QMessageBox()
             msg.setWindowTitle('Warning!')
             msg.setIcon(QtWidgets.QMessageBox.Warning)
@@ -291,32 +232,98 @@ class Ui_MainWindow(object):
             msg.exec()
 
         else:
-            w = Worker(name,id,address,phone,email)
-            if w not in self.lsWorkers:
-                self.lsWorkers.append(w)
-                self.lsWorkers.sort()
-                self.list.clear()
-                for i in self.lsWorkers:
-                    self.list.addItem(i.__str__())
+            if not self.inID.isReadOnly():
+                w = mc.Worker(name,id,address,phone,email)
+                if w not in self.lsWorkers:
+                    self.lsWorkers.append(w)
+                    self.lsWorkers.sort()
+                    self.list.clear()
+                    self.saveToFile()
+                    for i in self.lsWorkers:
+                        self.list.addItem(i.__str__())
+                else:
+                    msg = QtWidgets.QMessageBox()
+                    msg.setWindowTitle('Warning!')
+                    msg.setIcon(QtWidgets.QMessageBox.Warning)
+                    msg.setText("This person has already applied at your company!")
+                    msg.exec()
             else:
-                msg = QtWidgets.QMessageBox()
-                msg.setWindowTitle('Warning!')
-                msg.setIcon(QtWidgets.QMessageBox.Warning)
-                msg.setText("This person is already applied at your company!")
-                msg.exec()
+                for i in self.lsWorkers:
+                    if i.getID() == self.inID.text():
+                        self.lsWorkers.remove(i)
+                        i.setName(name)
+                        i.setAddress(address)
+                        i.setPhone(phone)
+                        i.setEmail(email)
+                        self.lsWorkers.append(i)
+                        self.lsWorkers.sort()
+                        self.list.clear()
+                        self.saveToFile()
+                        self.inID.setReadOnly(False)
+                        for j in self.lsWorkers:
+                            self.list.addItem(j.__str__())
 
-    def itemClicked(self,item):
-        tmp = item.text()
-        tmp = tmp.split('(')
-        id = tmp[1][:-1].split(" ")
-        id = id[1]
+
+    def editClicked(self,item):
+        if not self.list.currentItem():
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle("Warning!")
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("You should select any person from the list!")
+            msg.exec()
+        else:
+            item = self.list.currentItem()
+            tmp = item.text()
+            tmp = tmp.split('(')
+            id = tmp[1][:-1].split(" ")
+            id = id[1]
+            for i in self.lsWorkers:
+                if id == i.getID():
+                    self.inName.setText(i.getName())
+                    self.inID.setText(i.getID())
+                    self.inAdd.setText(i.getAddress())
+                    self.inPhone.setText(i.getPhone())
+                    self.inMail.setText(i.getEmail())
+                    self.inID.setReadOnly(True)
+
+    def deleteItem(self):
+        if not self.list.currentItem():
+            msg = QtWidgets.QMessageBox()
+            msg.setWindowTitle("Warning!")
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText("You should select any person from the list!")
+            msg.exec()
+        else:
+            item = self.list.currentItem()
+            tmp = item.text()
+            tmp = tmp.split('(')
+            id = tmp[1][:-1].split(" ")
+            id = id[1]
+            for i in self.lsWorkers:
+                if id == i.getID():
+                    self.lsWorkers.remove(i)
+                    self.saveToFile()
+                    self.list.clear()
+                    for j in self.lsWorkers:
+                        self.list.addItem(j.__str__())
+
+    def saveToFile(self):
+        outFile = open("database.txt","w")
         for i in self.lsWorkers:
-            if id == i.getID():
-                self.inName.setText(i.getName())
-                self.inID.setText(i.getID())
-                self.inAdd.setText(i.getAddress())
-                self.inPhone.setText(i.getPhone())
-                self.inMail.setText(i.getEmail())
+            print('{};{};{};{};{}\n'.format(i.getName(),i.getID(),i.getAddress(),i.getPhone(),i.getEmail()),file=outFile)
+        outFile.close()
+
+    def reloadDatas(self):
+        inFile = open("database.txt","r")
+        for i in inFile:
+            if i.count(";") == 4:
+                tmp = i.split(';')
+                self.lsWorkers.append(mc.Worker(tmp[0],tmp[1],tmp[2],tmp[3],tmp[4][:-1]))
+        inFile.close()
+        self.lsWorkers.sort()
+        for i in self.lsWorkers:
+            self.list.addItem(i.__str__())
+
 
 
 if __name__ == "__main__":
