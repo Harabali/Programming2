@@ -1,9 +1,3 @@
-# import nltk
-# from nltk.book import text1
-# nltk.download()
-
-# text1.concordance("the")
-
 import csv
 import string
 import math
@@ -81,16 +75,13 @@ def showDispersionOfWords(allWords,w):
 inCsv = csv.reader(open('TrumpTweets.csv','r',encoding="utf8"),delimiter=';')
 tweets = []
 for i in inCsv:
-    # lower casing
     lowcase = i[4].lower()
-    # clearStr = removePunctuation(lowcase)
     clearStr=eliminateTags(lowcase,'http')
     clearStr = eliminateTags(clearStr,'pic.')
     clearStr = eliminateTags(clearStr,'# ')
     clearStr = eliminateTags(clearStr,'@ ')
     clearStr = removePunctuation(clearStr)
     tweets.append(countLettersAndWords(clearStr.split(' ')))
-    # print(tweets[len(tweets)-1])
 
 stop = stopwords.words('english')
 bagOfWords = []
@@ -101,17 +92,9 @@ for ls in tweets:
 
 print(len(set(bagOfWords))/len(bagOfWords))
 
-# wcDict = numberOfWords(bagOfWords)
-#
-# showTopNWords(wcDict,5)
-#
-# showDispersionOfWords(bagOfWords,['great', 'thank', 'people', 'hillary', 'us'])
+wcDict = numberOfWords(bagOfWords)
 
-outFile = open('stopWords.txt','w')
-for i in stop:
-    print(i,file=outFile)
-outFile.close()
+showTopNWords(wcDict,5)
 
-#Preprocessing:
-
+showDispersionOfWords(bagOfWords,['great', 'thank', 'people', 'hillary', 'us'])
 
