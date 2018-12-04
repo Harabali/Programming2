@@ -4,7 +4,18 @@ import math
 import operator
 import matplotlib.pyplot as plt
 import numpy as np
+from docutils.nodes import classifier
+import nltk
 from nltk.corpus import stopwords
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+
+def eliminateTags(str,tags):
+    ind = str.find(tags)
+    while (ind!=-1):
+        indEnd = str.find(' ',ind+len(tags))
+        str = str[0:ind] + str[indEnd:]
+        ind = str.find(tags)
+    return str
 
 def removePunctuation(str):
     newStr = ''
@@ -13,18 +24,8 @@ def removePunctuation(str):
             newStr+=i
     return newStr
 
-def eliminateTags(str,tags):
-    ind = str.find(tags)
-    while (ind!=-1):
-        tmp = str + " "
-        indEnd = tmp.find(' ',ind+2)
-        indEnd = min(len(str),indEnd)
-        newStr = str[0:ind] + str[indEnd:len(str)]
-        str = newStr
-        ind = str.find(tags)
-    return str
-
-def countLettersAndWords(listStr):
+def countLettersAndWords(str):
+    listStr = str.split(' ')
     tmp=[]
     chars = 0
     for i in listStr:
@@ -33,10 +34,25 @@ def countLettersAndWords(listStr):
             chars+=len(i)
     return (tmp,len(tmp),chars)
 
+def bagOfWords(tweets):
+    bagOfWords = []
+    for ls in tweets:
+        for w in ls[0]:
+            bagOfWords.append(w)
+    return bagOfWords
 
-def numberOfWords(list):
+
+def removeStopWords(bow):
+    stop = stopwords.words('english')
+    newBow = []
+    for w in bow:
+        if w not in stop:
+            newBow.append(w)
+    return newBow
+
+def numberOfWords(bow):
     wcDict = dict([])
-    for i in list:
+    for i in bow:
         if i not in wcDict:
             wcDict[i] = 1
         else:
@@ -54,7 +70,7 @@ def showTopNWords(dict,n):
     plt.yticks(x)
     plt.show()
 
-def showDispersionOfWords(allWords,w):
+def showDistributionOfWords(allWords,w):
     x = np.arange(1,len(allWords)+1)
     ys = np.zeros((len(w),len(allWords)))
     ind_i=0
@@ -70,31 +86,51 @@ def showDispersionOfWords(allWords,w):
         ind_i += 1
     plt.show()
 
+def showSentimentDist(bow):
+    sid = SentimentIntensityAnalyzer()
+    concat = ''
+    for w in bow:
+        concat += w + ' '
+    ss = sid.polarity_scores(concat)
+    values=[]
+    labels=[]
+    for k in ss:
+        print('{}: {}'.format(k,ss[k],end=' '))
+        labels.append(k)
+        values.append(ss[k])
+    plt.pie(values[:-1],labels=labels[:-1],colors=['red','grey','green'],shadow = True, startangle = 90)
+    plt.title('Distribution of different sentimel words.')
+    plt.show()
 
-
+#MAIN:
 inCsv = csv.reader(open('TrumpTweets.csv','r',encoding="utf8"),delimiter=';')
 tweets = []
 for i in inCsv:
     lowcase = i[4].lower()
-    clearStr=eliminateTags(lowcase,'http')
+    clearStr = eliminateTags(lowcase,'http')
     clearStr = eliminateTags(clearStr,'pic.')
     clearStr = eliminateTags(clearStr,'# ')
     clearStr = eliminateTags(clearStr,'@ ')
     clearStr = removePunctuation(clearStr)
-    tweets.append(countLettersAndWords(clearStr.split(' ')))
+    tweets.append(countLettersAndWords(clearStr))
+    # print(tweets[len(tweets)-1])
 
-stop = stopwords.words('english')
-bagOfWords = []
-for ls in tweets:
-    for w in ls[0]:
-        if w not in stop:
-            bagOfWords.append(w)
 
-print(len(set(bagOfWords))/len(bagOfWords))
+bow = bagOfWords(tweets)
 
-wcDict = numberOfWords(bagOfWords)
+print(len(set(bow))/len(bow))
 
-showTopNWords(wcDict,5)
+bow = removeStopWords(bow)
+print(len(bow))
 
-showDispersionOfWords(bagOfWords,['great', 'thank', 'people', 'hillary', 'us'])
+wcDict = numberOfWords(bow)
+for k,v in wcDict:
+    print(k,':',v)
+
+
+showTopNWords(wcDict,10)
+
+showDistributionOfWords(bow,['great', 'thank', 'people', 'hillary', 'us', 'america', 'big', 'money'])
+
+showSentimentDist(bow)
 
