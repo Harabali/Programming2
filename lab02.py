@@ -1,4 +1,4 @@
-import lab03
+# import lab03
 
 class IntegerNum:
     'class attribute goes here'
@@ -100,5 +100,5 @@ specLS = SpecialElementsOfList([-25, -10, -7, -3, 2, 4, 8, 10])
 print(specLS.list)
 print(specLS.getSumZeroSubLists())
 
-t1 = lab03.Triangle(3,4,5)
-print(t1)
+# t1 = lab03.Triangle(3,4,5)
+# print(t1)

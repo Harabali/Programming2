@@ -5,9 +5,13 @@ class Month:
     def __init__(self,number):
         self.__name = Month.names[number-1]
         self.__length = Month.numOfdays[number-1]
+        self.__number = number
 
     def getName(self):
         return self.__name
+
+    def getNumber(self):
+        return self.__number
 
     def getLength(self):
         return self.__length
@@ -19,7 +23,10 @@ class NameDaysOfMonth(Month):
 
     def __init__(self,number):
         Month.__init__(self,number)
-        self.__names = [0 for i in range(self.getLength())]
+        self.__names = ['' for i in range(self.getLength())]
+
+    def getNames(self):
+        return self.__names
 
     def __str__(self):
         tmp = Month.__str__(self) +' and the day of names:\n'
@@ -38,7 +45,7 @@ class NameDaysOfMonth(Month):
                 ind = 0
                 for line in fin:
                     start = line.find(':')
-                    self.__names[ind] = line[start+1:-1].split(',')
+                    self.__names[ind] = line[start+1:-1]
                     ind += 1
             except FileNotFoundError:
                 print('The given file is not found.')
@@ -105,6 +112,10 @@ class SchoolClass:
             except FileNotFoundError:
                 print('The given file is not found.')
 
+    def inputMember(self,str):
+        tmp = str.split(" ")
+        self.__members.append(Student(tmp[1][:-1],tmp[0]))
+
     def getMember(self):
         return self.__members
 
@@ -113,36 +124,36 @@ class SchoolClass:
             self.__members.append(i)
         return self
 
-#MAIN:
-tmp = NameDaysOfMonth(4)
-tmp.inputNames('AprilNames.txt')
-
-sc = SchoolClass('12B')
-sc.inputMembers('12B class.txt')
-
-sc2 = SchoolClass('8A')
-sc2.inputMembers('8A class.txt')
-
-sc += sc2
-print(sc)
-
-#dictionary:
-partys = {}
-for i in sc.getMember():
-    n = tmp.getDayOfName(i.get_firstName())
-    if n != -1:
-        if n in partys:
-            partys[n].append(i)
-            partys[n].sort()
-        else:
-            partys[n] = []
-            partys[n].append(i)
-            partys[n].sort()
-
-for i in partys:
-    if len(partys[i]) == 1:
-        print(i,':',partys[i][0])
-    else:
-        print(i,':')
-        for j in partys[i]:
-            print("   :",j)
+# #MAIN:
+# tmp = NameDaysOfMonth(4)
+# tmp.inputNames('AprilNames.txt')
+#
+# sc = SchoolClass('12B')
+# sc.inputMembers('12B class.txt')
+#
+# sc2 = SchoolClass('8A')
+# sc2.inputMembers('8A class.txt')
+#
+# sc += sc2
+# print(sc)
+#
+# #dictionary:
+# partys = {}
+# for i in sc.getMember():
+#     n = tmp.getDayOfName(i.get_firstName())
+#     if n != -1:
+#         if n in partys:
+#             partys[n].append(i)
+#             partys[n].sort()
+#         else:
+#             partys[n] = []
+#             partys[n].append(i)
+#             partys[n].sort()
+#
+# for i in partys:
+#     if len(partys[i]) == 1:
+#         print(i,':',partys[i][0])
+#     else:
+#         print(i,':')
+#         for j in partys[i]:
+#             print("   :",j)
